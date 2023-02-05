@@ -1,3 +1,16 @@
+import openpyxl 
+
+input_file='cas.xlsx'
+wb=openpyxl.load_workbook(input_file)
+sh=wb['Sheet1']
+list_cas=[]
+for row in sh['A']:
+    list_cas.append(row.value)
+
+print(list_cas)
+ 
+
+
 def is_cas(cas):
     cas=list(cas)
     cas_list=''.join(ch for ch in cas if ch.isdigit())
