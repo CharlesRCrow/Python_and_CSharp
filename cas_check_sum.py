@@ -3,13 +3,15 @@ import openpyxl
 input_file='cas.xlsx'
 wb=openpyxl.load_workbook(input_file)
 sh=wb['Sheet1']
-list_cas=[]
-for row in sh['A']:
-    list_cas.append(row.value)
 
-print(list_cas)
- 
-
+sheet_cells=[]
+for rows in sh.iter_rows():
+    list_cas=[]
+    for cell in rows:
+        list_cas.append(cell.value)
+    sheet_cells.append(list_cas)  
+sheet_cells=sheet_cells[1:]
+print(sheet_cells)    
 
 def is_cas(cas):
     cas=list(cas)
@@ -44,6 +46,12 @@ def check_sum(cas):
         total+=it
     return clean_cas,(total%10==check_digit)  
 
-cas_check=input('Enter CAS Number: ')
-result=check_sum(cas_check)
-print(result)
+cas_check=[]
+
+for row in sheet_cells:
+    value=row[0]
+    result=check_sum(value)
+    cas_check.append(result)
+
+print(cas_check)
+
