@@ -1,8 +1,12 @@
 import openpyxl 
 
-input_file='cas.xlsx'
+input_file=str(input("Enter File Name (includ .xlsx): "))
 wb=openpyxl.load_workbook(input_file)
-sh=wb['Sheet1']
+print(wb.sheetnames)
+sheet_name=str(input('Enter name of specific sheet as seen above: '))
+sheet_name=sheet_name.replace("'",'')
+sh=wb[sheet_name]
+index=int(input('Column number with CAS data (start from 0): '))
 
 sheet_cells=[]
 for rows in sh.iter_rows():
@@ -49,7 +53,7 @@ def check_sum(cas):
 cas_check=[]
 
 for row in sheet_cells:
-    value=row[0]
+    value=str(row[index])
     result=check_sum(value)
     cas_check.append(result)
 
