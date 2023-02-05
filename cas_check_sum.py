@@ -1,7 +1,10 @@
 import openpyxl 
 
+#converts data from excel file to usable form
+
 input_file=str(input("Enter File Name (includ .xlsx): "))
 wb=openpyxl.load_workbook(input_file)
+
 print(wb.sheetnames)
 sheet_name=str(input('Enter name of specific sheet as seen above: '))
 sheet_name=sheet_name.replace("'",'')
@@ -15,7 +18,9 @@ for rows in sh.iter_rows():
         list_cas.append(cell.value)
     sheet_cells.append(list_cas)  
 sheet_cells=sheet_cells[1:]
-print(sheet_cells)    
+   
+
+# Functions that determines wheter CAS number is valid and reformates number into correct format
 
 def is_cas(cas):
     cas=list(cas)
@@ -56,6 +61,39 @@ for row in sheet_cells:
     value=str(row[index])
     result=check_sum(value)
     cas_check.append(result)
+   
 
-print(cas_check)
+# Inserts 'Cleaned CAS' and 'Valid CAS' columns to excel file
+
+sh.insert_cols(index+1)
+cas_title=sh.cell(row=1, column=(index+1))
+cas_title.value='Cleaned CAS'
+
+sh.insert_cols(index+2)
+valid_title=sh.cell(row=1, column=(index+2))
+valid_title.value='Valid CAS?'
+
+# Converts results from check_sum function into seperate lists
+cas_check=list(cas_check)
+cas_write_list=[]
+valid_write_list=[]
+
+for value in cas_check:
+    cas_write_list.append(value[0])
+
+for value in cas_check:
+    valid_write_list.append(value[1])    
+
+# Writes lists into the above created columns
+y=2
+z=0
+for x in range(len(cas_check)):
+    cas_write=sh.cell(row=y, column=(index+1))
+    cas_write.value=cas_write_list[z]
+    valid_write=sh.cell(row=y, column=(index+2))
+    valid_write.value=valid_write_list[z]
+    y+=1
+    z+=1
+
+wb.save(input_file)
 
