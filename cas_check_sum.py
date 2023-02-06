@@ -23,7 +23,7 @@ for rows in sh.iter_rows():
 header_cells=sheet_cells[0] 
 sheet_cells=sheet_cells[1:]
 
-print(header_cells)
+print('Column Names: ',header_cells)
   
 index=int(input('Column number with CAS data (start from 0): '))
    
