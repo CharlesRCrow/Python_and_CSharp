@@ -1,15 +1,18 @@
 import openpyxl 
 
-#converts data from excel file to usable form
+# Converts data from excel file to usable form
 
-input_file=str(input("Enter File Name (includ .xlsx): "))
+input_file=str(input("Enter File Name: "))
+
+if '.xlsx' not in input_file:
+    input_file+='.xlsx'
+
 wb=openpyxl.load_workbook(input_file)
 
-print(wb.sheetnames)
+print('Names of Sheets in file: ',wb.sheetnames)
 sheet_name=str(input('Enter name of specific sheet as seen above: '))
 sheet_name=sheet_name.replace("'",'')
 sh=wb[sheet_name]
-index=int(input('Column number with CAS data (start from 0): '))
 
 sheet_cells=[]
 for rows in sh.iter_rows():
@@ -17,9 +20,13 @@ for rows in sh.iter_rows():
     for cell in rows:
         list_cas.append(cell.value)
     sheet_cells.append(list_cas)  
+header_cells=sheet_cells[0] 
 sheet_cells=sheet_cells[1:]
-   
 
+print(header_cells)
+  
+index=int(input('Column number with CAS data (start from 0): '))
+   
 # Functions that determines wheter CAS number is valid and reformates number into correct format
 
 def is_cas(cas):
@@ -62,7 +69,6 @@ for row in sheet_cells:
     result=check_sum(value)
     cas_check.append(result)
    
-
 # Inserts 'Cleaned CAS' and 'Valid CAS' columns to excel file
 
 sh.insert_cols(index+1)
