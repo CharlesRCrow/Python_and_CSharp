@@ -16,8 +16,8 @@ namespace pictures
     {
         static void Main(string[] args)
         {
-            
-            SelectColorMatrix(@"city.jpg", "polaroid");
+
+            SelectColorMatrix(@"mountain.jpg", "sepia");
             
         }   
         static void SaveImage(SKData sKData, string filename)
@@ -32,25 +32,31 @@ namespace pictures
             }
         }
 
-        static void ReSize(
+        static SKBitmap ReSize(
             string filename,
-            int targetWidth = 0,
-            int targetHeight = 0,
-            bool changeSize = false)
+            float resizeFactor = 2.0f,
+            bool changeSize = true)
         {
             SKBitmap skBitmap = SKBitmap.Decode(filename);
-            int originalWidth = skBitmap.Width;
-            int originalHeight = skBitmap.Height;
+
             
             if (!changeSize)
             {
-                SKSurface sKSurface = SKSurface.Create(new SKImageInfo(originalWidth, originalHeight));
-                SKCanvas sKCanvas = sKSurface.Canvas;
+                return skBitmap;
             }
             else
             {
-                SKSurface sKSurface = SKSurface.Create(new SKImageInfo(targetWidth, targetHeight));
-                SKCanvas sKCanvas = sKSurface.Canvas;
+                int width = (int)Math.Round(skBitmap.Width * resizeFactor);
+                int height = (int)Math.Round(skBitmap.Height * resizeFactor);
+                
+                SKBitmap resizedBitmap = new SKBitmap(width, height, skBitmap.ColorType, skBitmap.AlphaType);
+                SKCanvas canvas = new SKCanvas(resizedBitmap);
+                canvas.SetMatrix(SKMatrix.CreateScale(resizeFactor, resizeFactor));
+                canvas.DrawBitmap(skBitmap, new SKPoint());
+                canvas.ResetMatrix();
+                canvas.Flush();
+                
+                return resizedBitmap;
             }
         }
 
@@ -157,12 +163,16 @@ namespace pictures
             {
                 selectedColorMatrix = colorMatrixes[matrix_name];
             }
-            SKPaint paint = new SKPaint();
-            paint.ColorFilter = SKColorFilter.CreateColorMatrix(selectedColorMatrix);
-            SKSurface sKSurface = SKSurface.Create(new SKImageInfo(7000, 3938)); //
-            SKCanvas sKCanvas = sKSurface.Canvas; //
+            
+            SKPaint paint = new SKPaint
+            {
+                ColorFilter = SKColorFilter.CreateColorMatrix(selectedColorMatrix)
+            };
 
-            SKBitmap skBitmap = SKBitmap.Decode(filename); //
+            SKBitmap skBitmap = ReSize(filename);
+
+            SKSurface sKSurface = SKSurface.Create(new SKImageInfo(skBitmap.Width, skBitmap.Height)); //
+            SKCanvas sKCanvas = sKSurface.Canvas; //
             sKCanvas.DrawBitmap(skBitmap, new SKPoint(), paint);
 
             SKImage sKImage = sKSurface.Snapshot();                       
