@@ -1,13 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System;
-using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.IO.Enumeration;
-using SkiaSharp;
-using System.Reflection;
-using System.Collections.Generic;
+﻿using SkiaSharp;
 
 
 namespace pictures
@@ -17,15 +8,16 @@ namespace pictures
         static void Main(string[] args)
         {
             SKBitmap sKBitmap = SKBitmap.Decode("city.jpg");
-            SKBitmap sKBitmapSize = ReSize(sKBitmap, 0.8f, true);
-            SKBitmap sKBitmapColor = SelectColorMatrix(sKBitmapSize, "colorMatrix1");
+            SKBitmap sKBitmapSize = ReSize(sKBitmap, 0.1f, false);
+            SKBitmap sKBitmapFlip = Rotate(sKBitmapSize, 90, false);
+            SKBitmap sKBitmapColor = SelectColorMatrix(sKBitmapFlip, "inverter", false);
             SaveImage(sKBitmapColor, "image2", ".jpg");
             
         }   
         static SKImage GenerateImage(SKBitmap sKBitmap)
         {
-            SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height)); //
-            SKCanvas sKCanvas = sKSurface.Canvas; //
+            SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height)); 
+            SKCanvas sKCanvas = sKSurface.Canvas; 
             sKCanvas.DrawBitmap(sKBitmap, new SKPoint());
             sKCanvas.ResetMatrix();
             sKCanvas.Flush();
@@ -98,8 +90,39 @@ namespace pictures
             }
         }
 
-        static SKBitmap SelectColorMatrix(SKBitmap sKBitmap, string matrix_name)
+        static SKBitmap Rotate(SKBitmap bitmap, double angle, bool rotate = false)
         {
+            if (!rotate)
+            {
+                return bitmap;
+            }
+            double radians = Math.PI * angle / 180;
+            float sine = (float)Math.Abs(Math.Sin(radians));
+            float cosine = (float)Math.Abs(Math.Cos(radians));
+            int originalWidth = bitmap.Width;
+            int originalHeight = bitmap.Height;
+            int rotatedWidth = (int)(cosine * originalWidth + sine * originalHeight);
+            int rotatedHeight = (int)(cosine * originalHeight + sine * originalWidth);
+
+            var rotatedBitmap = new SKBitmap(rotatedWidth, rotatedHeight);
+
+            using (var surface = new SKCanvas(rotatedBitmap))
+            {
+                surface.Clear();
+                surface.Translate(rotatedWidth / 2, rotatedHeight / 2);
+                surface.RotateDegrees((float)angle);
+                surface.Translate(-originalWidth / 2, -originalHeight / 2);
+                surface.DrawBitmap(bitmap, new SKPoint());
+            }
+            return rotatedBitmap;
+        }
+
+        static SKBitmap SelectColorMatrix(SKBitmap sKBitmap, string matrix_name, bool changeColor = false)
+        {
+            if (!changeColor)
+            {
+                return sKBitmap;
+            }
             float [] monoChrome = new float[]
             {
                 0.21f, 0.72f, 0.07f, 0, 0,
@@ -166,6 +189,12 @@ namespace pictures
                 -0.016f, -0.016f, 1.483f, 0, 0,
                 0, 0, 0, 1, 0
             };
+            float [] inverter = new float[] {
+                -1f,  0f,  0f, 0f, 1f,
+                0f, -1f,  0f, 0f, 1f,
+                0f,  0f, -1f, 0f, 1f,
+                0f,  0f,  0f, 1f, 0f
+            };            
 
             Dictionary<string, float[]> colorMatrixes = new Dictionary<string, float[]>()
             {
@@ -178,7 +207,8 @@ namespace pictures
                 {"colorMatrix6", colorMatrix6},
                 {"colorMatrixElements", colorMatrixElements},
                 {"rgbBgr", rgbBgr},
-                {"polaroid", polaroid}
+                {"polaroid", polaroid},
+                {"inverter", inverter}
             };
                         
             float [] selectedColorMatrix = new float []  //default to no change
