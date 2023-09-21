@@ -8,10 +8,11 @@ namespace pictures
         static void Main(string[] args)
         {
             SKBitmap sKBitmap = SKBitmap.Decode("city.jpg");
-            SKBitmap sKBitmapSize = ReSize(sKBitmap, 0.1f, false);
-            SKBitmap sKBitmapFlip = Rotate(sKBitmapSize, 90, false);
-            SKBitmap sKBitmapColor = SelectColorMatrix(sKBitmapFlip, "inverter", false);
-            SaveImage(sKBitmapColor, "image2", ".jpg");
+            SKBitmap sKBitmapSize = ReSize(sKBitmap, 0.75f, false);
+            SKBitmap sKBitmapRotate = Rotate(sKBitmapSize, 90, false);
+            SKBitmap sKBitmapColor = SelectColorMatrix(sKBitmapRotate, "sepia", true);
+            SKBitmap sKBitmapMirror = Mirror(sKBitmapColor, false);
+            SaveImage(sKBitmapMirror, "sepia_city", ".jpg");
             
         }   
         static SKImage GenerateImage(SKBitmap sKBitmap)
@@ -31,38 +32,54 @@ namespace pictures
             string filename = $"{name}.png";
             SKImage sKImage = GenerateImage(sKBitmap);
 
-            if (new Dictionary<string, object>()
+            Dictionary<string, object> outputType = new Dictionary<string, object>()
             {
                 {".png", SKEncodedImageFormat.Png},
                 {".jpg", SKEncodedImageFormat.Jpeg},
                 {".bmp", SKEncodedImageFormat.Bmp},
-            }.ContainsKey(fileType))
+                {".webp", SKEncodedImageFormat.Webp}
+            };
+
+            if (outputType.ContainsKey(fileType))
             {
                 filename = $"{name}{fileType}";
-                _ = sKImage.Encode((SKEncodedImageFormat)new Dictionary<string, object>()
-            {
-                {".png", SKEncodedImageFormat.Png},
-                {".jpg", SKEncodedImageFormat.Jpeg},
-                {".bmp", SKEncodedImageFormat.Bmp},
-            }[fileType], 100);
+                SKData sKData = sKImage.Encode((SKEncodedImageFormat) outputType[fileType], 100);
+                using (FileStream fileStream = File.Create(filename))
+                {                            
+                    sKData.AsStream().Seek(0, SeekOrigin.Begin);
+                    sKData.AsStream().CopyTo(fileStream);
 
+                    fileStream.Flush();
+                    fileStream.Close();
+                }
             }
             else
             {
-                _ = sKImage.Encode(SKEncodedImageFormat.Png, 100);
+                SKData sKData = sKImage.Encode(SKEncodedImageFormat.Png, 100);
+                using (FileStream fileStream = File.Create(filename))
+                {                            
+                    sKData.AsStream().Seek(0, SeekOrigin.Begin);
+                    sKData.AsStream().CopyTo(fileStream);
+
+                    fileStream.Flush();
+                    fileStream.Close();
+                }                
             }
+        }
 
-            _ = GenerateImage(sKBitmap);
-            SKData sKData = sKImage.Encode(SKEncodedImageFormat.Png, 100);
-
-            using (FileStream fileStream = File.Create(filename))
-            {                            
-                sKData.AsStream().Seek(0, SeekOrigin.Begin);
-                sKData.AsStream().CopyTo(fileStream);
-
-                fileStream.Flush();
-                fileStream.Close();
+        static SKBitmap Mirror(SKBitmap sKBitmap, bool flip = false)
+        {
+            if (!flip)
+            {
+                return sKBitmap;
             }
+            SKCanvas sKCanvas = new SKCanvas(sKBitmap);
+            using(new SKAutoCanvasRestore(sKCanvas, true))
+            {
+                sKCanvas.Scale(-1, 1, sKBitmap.Width / 2.0f, 0);
+                sKCanvas.DrawBitmap(sKBitmap, 0, 0);
+            }
+            return sKBitmap;
         }
 
         static SKBitmap ReSize(
