@@ -10,9 +10,10 @@ namespace pictures
             SKBitmap sKBitmap = SKBitmap.Decode("city.jpg");
             SKBitmap sKBitmapSize = ReSize(sKBitmap, 0.75f, false);
             SKBitmap sKBitmapRotate = Rotate(sKBitmapSize, 90, false);
-            SKBitmap sKBitmapColor = SelectColorMatrix(sKBitmapRotate, "sepia", true);
+            SKBitmap sKBitmapColor = SelectColorMatrix(sKBitmapRotate, "sepia", false);
             SKBitmap sKBitmapMirror = Mirror(sKBitmapColor, false);
-            SaveImage(sKBitmapMirror, "sepia_city", ".jpg");
+            SKBitmap sKBitmapBlur = Blur(sKBitmapMirror, .5f, .5f, true);
+            SaveImage(sKBitmapBlur, "sepia_city", ".jpg");
             
         }   
         static SKImage GenerateImage(SKBitmap sKBitmap)
@@ -78,6 +79,22 @@ namespace pictures
             {
                 sKCanvas.Scale(-1, 1, sKBitmap.Width / 2.0f, 0);
                 sKCanvas.DrawBitmap(sKBitmap, 0, 0);
+            }
+            return sKBitmap;
+        }
+
+        static SKBitmap Blur(SKBitmap sKBitmap, float sigmaX = 5f, float sigmaY = 5f, bool blur = false)
+        {
+            if (!blur)
+            {
+                return sKBitmap;
+            }
+            SKCanvas sKCanvas = new SKCanvas(sKBitmap);
+            using (var filter = SKImageFilter.CreateBlur(sigmaX, sigmaY))
+            using (var paint = new SKPaint())
+            {
+                paint.ImageFilter = filter;
+                sKCanvas.DrawBitmap(sKBitmap, SKRect.Create(sKBitmap.Width, sKBitmap.Height), paint);
             }
             return sKBitmap;
         }
