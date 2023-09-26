@@ -26,8 +26,7 @@ namespace pictures
             SKImage sKImage = sKSurface.Snapshot();
             return sKImage;
         }
-        
-        
+               
         static void SaveImage(SKBitmap sKBitmap, string name, string fileType = ".png")
         {          
             string filename = $"{name}.png";
