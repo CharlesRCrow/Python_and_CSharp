@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v7.0": {
       "picture_project/1.0.0": {
         "dependencies": {
-          "SkiaSharp": "2.88.5",
+          "SkiaSharp": "2.88.6",
           "SkiaSharp.NativeAssets.Linux": "2.88.5",
           "System.Drawing.Common": "7.0.0"
         },
@@ -32,21 +32,21 @@
           }
         }
       },
-      "SkiaSharp/2.88.5": {
+      "SkiaSharp/2.88.6": {
         "dependencies": {
-          "SkiaSharp.NativeAssets.Win32": "2.88.5",
-          "SkiaSharp.NativeAssets.macOS": "2.88.5"
+          "SkiaSharp.NativeAssets.Win32": "2.88.6",
+          "SkiaSharp.NativeAssets.macOS": "2.88.6"
         },
         "runtime": {
           "lib/net6.0/SkiaSharp.dll": {
             "assemblyVersion": "2.88.0.0",
-            "fileVersion": "2.88.5.0"
+            "fileVersion": "2.88.6.0"
           }
         }
       },
       "SkiaSharp.NativeAssets.Linux/2.88.5": {
         "dependencies": {
-          "SkiaSharp": "2.88.5"
+          "SkiaSharp": "2.88.6"
         },
         "runtimeTargets": {
           "runtimes/linux-arm/native/libSkiaSharp.so": {
@@ -71,7 +71,7 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.macOS/2.88.5": {
+      "SkiaSharp.NativeAssets.macOS/2.88.6": {
         "runtimeTargets": {
           "runtimes/osx/native/libSkiaSharp.dylib": {
             "rid": "osx",
@@ -80,7 +80,7 @@
           }
         }
       },
-      "SkiaSharp.NativeAssets.Win32/2.88.5": {
+      "SkiaSharp.NativeAssets.Win32/2.88.6": {
         "runtimeTargets": {
           "runtimes/win-arm64/native/libSkiaSharp.dll": {
             "rid": "win-arm64",
@@ -133,12 +133,12 @@
       "path": "microsoft.win32.systemevents/7.0.0",
       "hashPath": "microsoft.win32.systemevents.7.0.0.nupkg.sha512"
     },
-    "SkiaSharp/2.88.5": {
+    "SkiaSharp/2.88.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-43t9YEvcZtT+tuMN4hHH8rV8h7ttk1DRv5Tptxamy+bPuE8Up51+ME1Y1TXYAQf75686tHO488a0YKAnmJaSNg==",
-      "path": "skiasharp/2.88.5",
-      "hashPath": "skiasharp.2.88.5.nupkg.sha512"
+      "sha512": "sha512-wdfeBAQrEQCbJIRgAiargzP1Uy+0grZiG4CSgBnhAgcJTsPzlifIaO73JRdwIlT3TyBoeU9jEqzwFUhl4hTYnQ==",
+      "path": "skiasharp/2.88.6",
+      "hashPath": "skiasharp.2.88.6.nupkg.sha512"
     },
     "SkiaSharp.NativeAssets.Linux/2.88.5": {
       "type": "package",
@@ -147,19 +147,19 @@
       "path": "skiasharp.nativeassets.linux/2.88.5",
       "hashPath": "skiasharp.nativeassets.linux.2.88.5.nupkg.sha512"
     },
-    "SkiaSharp.NativeAssets.macOS/2.88.5": {
+    "SkiaSharp.NativeAssets.macOS/2.88.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-snAA6ghUHBeXSOEa/lbjYMUPDKdNh4YRjU+dBoU85EMDEPlAwtkM9gESTM8FKY67ozqX8tqLzad1RRDNistGsg==",
-      "path": "skiasharp.nativeassets.macos/2.88.5",
-      "hashPath": "skiasharp.nativeassets.macos.2.88.5.nupkg.sha512"
+      "sha512": "sha512-Sko9LFxRXSjb3OGh5/RxrVRXxYo48tr5NKuuSy6jB85GrYt8WRqVY1iLOLwtjPiVAt4cp+pyD4i30azanS64dw==",
+      "path": "skiasharp.nativeassets.macos/2.88.6",
+      "hashPath": "skiasharp.nativeassets.macos.2.88.6.nupkg.sha512"
     },
-    "SkiaSharp.NativeAssets.Win32/2.88.5": {
+    "SkiaSharp.NativeAssets.Win32/2.88.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-U0GuMsdtdbHjVmuyTPRbb+ifaTPYBIV8WvPFx81ZHwzfL2TVe8SQjum8AMXSZDDlf90rhxOC5slzaL33uoHUhA==",
-      "path": "skiasharp.nativeassets.win32/2.88.5",
-      "hashPath": "skiasharp.nativeassets.win32.2.88.5.nupkg.sha512"
+      "sha512": "sha512-7TzFO0u/g2MpQsTty4fyCDdMcfcWI+aLswwfnYXr3gtNS6VLKdMXPMeKpJa3pJSLnUBN6wD0JjuCe8OoLBQ6cQ==",
+      "path": "skiasharp.nativeassets.win32/2.88.6",
+      "hashPath": "skiasharp.nativeassets.win32.2.88.6.nupkg.sha512"
     },
     "System.Drawing.Common/7.0.0": {
       "type": "package",
