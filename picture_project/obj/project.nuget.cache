@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "acuP5ptMboqMRkooip1Jw/TvKz8QSSWEsVueb2wsJhFjRupcd0m823iVoojzJfLbc0vZdokpLo9UCZqLXQMb+w==",
+  "dgSpecHash": "efUHbCdxxcc5M6D0A68ob7n40Q18SXJiQ3zUn8v7W1fYLxWUM7N5kjgxD+UTWlae4aviNwZGFIx2qBTeBIr5sQ==",
   "success": true,
-  "projectFilePath": "c:\\Users\\charl\\OneDrive\\Documents\\GitHub\\chemistry_tools\\picture_project\\picture_project.csproj",
+  "projectFilePath": "/workspaces/chemistry_tools/picture_project/picture_project.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\charl\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
-    "C:\\Users\\charl\\.nuget\\packages\\skiasharp\\2.88.6\\skiasharp.2.88.6.nupkg.sha512",
-    "C:\\Users\\charl\\.nuget\\packages\\skiasharp.nativeassets.linux\\2.88.5\\skiasharp.nativeassets.linux.2.88.5.nupkg.sha512",
-    "C:\\Users\\charl\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.6\\skiasharp.nativeassets.macos.2.88.6.nupkg.sha512",
-    "C:\\Users\\charl\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.6\\skiasharp.nativeassets.win32.2.88.6.nupkg.sha512",
-    "C:\\Users\\charl\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512"
+    "/home/codespace/.nuget/packages/microsoft.win32.systemevents/7.0.0/microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "/home/codespace/.nuget/packages/skiasharp/2.88.6/skiasharp.2.88.6.nupkg.sha512",
+    "/home/codespace/.nuget/packages/skiasharp.nativeassets.linux/2.88.5/skiasharp.nativeassets.linux.2.88.5.nupkg.sha512",
+    "/home/codespace/.nuget/packages/skiasharp.nativeassets.macos/2.88.6/skiasharp.nativeassets.macos.2.88.6.nupkg.sha512",
+    "/home/codespace/.nuget/packages/skiasharp.nativeassets.win32/2.88.6/skiasharp.nativeassets.win32.2.88.6.nupkg.sha512",
+    "/home/codespace/.nuget/packages/system.drawing.common/7.0.0/system.drawing.common.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }
