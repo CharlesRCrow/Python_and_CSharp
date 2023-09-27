@@ -63,6 +63,15 @@ namespace Picture_GUI
 
                     resetButton.IsEnabled = true;
                     resetButton.Visibility = Visibility.Visible;
+
+                    RotateButton.IsEnabled = true;
+                    RotateButton.Visibility = Visibility.Visible;
+
+                    BrightnessLabel.Visibility = Visibility.Visible;
+                    ContrastLabel.Visibility = Visibility.Visible;
+
+                    BrightnessSlider.Visibility = Visibility.Visible;
+                    ContrastSlider.Visibility = Visibility.Visible;
                 }
             }
             catch (Exception ex)
@@ -117,34 +126,37 @@ namespace Picture_GUI
         }
         private void UpdateImage(object sender, EventArgs e)
         {
+            changedBitmap = originaBitmap;
             if (IsLoaded)
             {
                 float brightness = (float)BrightnessSlider.Value;
                 float contrast = (float)ContrastSlider.Value;
 
-                if (ContrastSlider.Value < 1)
-                {
-                    contrast = (float)(ContrastSlider.Value / 2) + 0.5f;
-                    changedBitmap = ChangeContrast(changedBitmap, contrast);
-                    SKImage ContrastImage = GenerateImage(changedBitmap);
-                    myImage.Source = WPFExtensions.ToWriteableBitmap(ContrastImage);  //
-                }
+            if (ContrastSlider.Value < 1)
+            {
+                contrast = (float)(ContrastSlider.Value / 2) + 0.5f;
+                changedBitmap = ChangeContrast(changedBitmap, contrast);
+                SKImage ContrastImage = GenerateImage(changedBitmap);
+                myImage.Source = WPFExtensions.ToWriteableBitmap(ContrastImage);  //
+            }
 
-                if (sender is Button btn)
+            if (sender is Button btn)
+            
                 {
-                    if (btn.Name == "Rotate")
-                    {
-                        changedBitmap = Rotate(changedBitmap);
-                        SKImage RotateImage = GenerateImage(changedBitmap);
-                        myImage.Source = WPFExtensions.ToWriteableBitmap(RotateImage);
-                    }
+                if (btn.Name == "RotateButton")
+                {
+                     changedBitmap = Rotate(changedBitmap);
+                     SKImage RotateImage = GenerateImage(changedBitmap);
+                     myImage.Source = WPFExtensions.ToWriteableBitmap(RotateImage);
                 }
+            }
 
-                changedBitmap = ChangeLight(changedBitmap, brightness);
-                SKImage image = GenerateImage(changedBitmap);
-                myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+            changedBitmap = ChangeLight(changedBitmap, brightness);
+            SKImage image = GenerateImage(changedBitmap);
+            myImage.Source = WPFExtensions.ToWriteableBitmap(image);
             }
         }
+
 
         private void Reset(object sender, EventArgs e)
         {
