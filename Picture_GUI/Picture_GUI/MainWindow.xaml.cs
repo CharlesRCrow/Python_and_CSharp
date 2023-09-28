@@ -1,24 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 using SkiaSharp.Views.WPF;
 using SkiaSharp;
-using static System.Net.Mime.MediaTypeNames;
 using static Picture_GUI.ColorMatrixes;
-using System.Diagnostics.Contracts;
 
 namespace Picture_GUI
 {
@@ -31,6 +20,7 @@ namespace Picture_GUI
         public SKBitmap originalBitmap { get; set; }
         public SKBitmap changedBitmap { get; set; }
         public SKBitmap filterBitmap { get; set; }
+        public int Angle { get; set; }
 
         public MainWindow()
         {
@@ -55,7 +45,8 @@ namespace Picture_GUI
                     BitmapImage bitmapImage = new BitmapImage(fileUri);
                     myImage.Source = bitmapImage;
                     originalBitmap = SKBitmap.Decode(openFileDialog.FileName);
-                    changedBitmap = SKBitmap.Decode(openFileDialog.FileName); //change to clone later
+                    Angle = 0;
+                    //changedBitmap = SKBitmap.Decode(openFileDialog.FileName); //change to clone later
 
 
                     btnSaveFile.IsEnabled = true;
@@ -67,8 +58,8 @@ namespace Picture_GUI
                     mirrorButton.IsEnabled = true;
                     mirrorButton.Visibility = Visibility.Visible;
 
-                    rotateButton.IsEnabled = true;
-                    rotateButton.Visibility = Visibility.Visible;
+                    //rotateButton.IsEnabled = true;
+                    //rotateButton.Visibility = Visibility.Visible;
 
                     resetButton.IsEnabled = true;
                     resetButton.Visibility = Visibility.Visible;
@@ -120,8 +111,17 @@ namespace Picture_GUI
             }
             try
             {
+                if (changedBitmap == null)
+                {
+                    filterBitmap = originalBitmap;
+                }
+                else
+                {
+                    filterBitmap = changedBitmap;
+                }
+
                 string key = ((KeyValuePair<string, float[]>)colorSelection.SelectedItem).Key;
-                filterBitmap = SelectColorMatrix(changedBitmap, key);
+                filterBitmap = SelectColorMatrix(filterBitmap, key);
                 SKImage image = GenerateImage(filterBitmap);
                 myImage.Source = WPFExtensions.ToWriteableBitmap(image);
             }
@@ -132,47 +132,48 @@ namespace Picture_GUI
         }
         private void UpdateImage(object sender, EventArgs e)
         {
+            if (filterBitmap == null)
+            {
+                changedBitmap = originalBitmap;
+            }
+            else
+            {
+                changedBitmap = filterBitmap;
+            }
+
             if (IsLoaded)
             {
-                if (filterBitmap != null)
-                {
-                    changedBitmap = filterBitmap;
-                    filterBitmap = null;
-                }
-                else
-                {
-                    changedBitmap = originalBitmap;
-                }
                 float brightness = (float)BrightnessSlider.Value;
                 //float contrast = (float)ContrastSlider.Value;
 
-                if (ContrastSlider.Value < 1)
-                {
-                    float contrast = (float)(ContrastSlider.Value / 2) + 0.5f;
-                    changedBitmap = ChangeContrast(changedBitmap, contrast);
-                    //SKImage image = GenerateImage(changedBitmap);
-                    //myImage.Source = WPFExtensions.ToWriteableBitmap(image);  //
-                }
+                //if (ContrastSlider.Value < 1)
+                //{
+                    //float contrast = (float)(ContrastSlider.Value / 2) + 0.5f;
+                    //changedBitmap = ChangeContrast(changedBitmap, (float)(ContrastSlider.Value / 2) + 0.5f);
+                //}
 
                 if (sender is Button btn)
                 {
                     if (btn.Name == "rotateButton")
                     {
                         changedBitmap = Rotate(changedBitmap);
-                        //SKImage image = GenerateImage(changedBitmap);
-                        //myImage.Source = WPFExtensions.ToWriteableBitmap(image);
                     }
                     if (btn.Name == "mirrorButton")
                     {
                         changedBitmap = Mirror(changedBitmap);
                     }
                 }
+                //changedBitmap = ChangeContrast(changedBitmap, (float)(ContrastSlider.Value / 2) + 0.5f);
+                changedBitmap = ChangeContrast(changedBitmap, (float)ContrastSlider.Value);
+                //Rotate(changedBitmap, (double) Angle);
                 if (brightness != 0.0f)
                 {
                     changedBitmap = ChangeLight(changedBitmap, brightness);
                 }
-                SKImage image = GenerateImage(changedBitmap);
-                myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+                using (SKImage image = GenerateImage(changedBitmap))
+                {
+                    myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+                }
             }
         }
 
@@ -184,9 +185,16 @@ namespace Picture_GUI
             }
             try
             {
-                changedBitmap = originalBitmap;
-                SKImage image = GenerateImage(changedBitmap);
-                myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+                using (SKImage image = GenerateImage(originalBitmap))
+                {
+                    myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+                }
+
+                ContrastSlider.Value = 0;
+                BrightnessSlider.Value = 0;
+                colorSelection.SelectedIndex = 0;
+                changedBitmap = null;
+                filterBitmap = null;
             }
             catch (Exception ex)
             {
@@ -196,13 +204,15 @@ namespace Picture_GUI
 
         SKImage GenerateImage(SKBitmap sKBitmap)
         {
-            SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height));
-            SKCanvas sKCanvas = sKSurface.Canvas;
-            sKCanvas.DrawBitmap(sKBitmap, new SKPoint());
-            sKCanvas.ResetMatrix();
-            sKCanvas.Flush();
-            SKImage sKImage = sKSurface.Snapshot();
-            return sKImage;
+            using (SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height)))
+            {
+                SKCanvas sKCanvas = sKSurface.Canvas;
+                sKCanvas.DrawBitmap(sKBitmap, new SKPoint());
+                sKCanvas.ResetMatrix();
+                sKCanvas.Flush();
+                SKImage sKImage = sKSurface.Snapshot();
+                return sKImage;
+            }
         }
 
         static SKBitmap SelectColorMatrix(SKBitmap sKBitmap, string matrix_name)
@@ -214,17 +224,19 @@ namespace Picture_GUI
                 ColorFilter = SKColorFilter.CreateColorMatrix(selectedColorMatrix)
             };
 
-            SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height));
-            SKCanvas sKCanvas = sKSurface.Canvas;
-            sKCanvas.DrawBitmap(sKBitmap, new SKPoint(), paint);
+            using (SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height)))
+            {
+                SKCanvas sKCanvas = sKSurface.Canvas;
+                sKCanvas.DrawBitmap(sKBitmap, new SKPoint(), paint);
 
-            SKImage sKImage = sKSurface.Snapshot();
-            SKBitmap colorBitmap = SKBitmap.FromImage(sKImage);
+                SKImage sKImage = sKSurface.Snapshot();
+                SKBitmap colorBitmap = SKBitmap.FromImage(sKImage);
 
-            sKCanvas.ResetMatrix();
-            sKCanvas.Flush();
+                sKCanvas.ResetMatrix();
+                sKCanvas.Flush();
 
-            return colorBitmap;
+                return colorBitmap;
+            }
         }
 
         static SKBitmap Rotate(SKBitmap bitmap, double angle = 90.0f)
@@ -257,17 +269,19 @@ namespace Picture_GUI
                 ColorFilter = SKColorFilter.CreateHighContrast(false, SKHighContrastConfigInvertStyle.NoInvert, contrast)
             };
 
-            SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height));
-            SKCanvas sKCanvas = sKSurface.Canvas;
-            sKCanvas.DrawBitmap(sKBitmap, new SKPoint(), paint);
+            using (SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height)))
+            {
+                SKCanvas sKCanvas = sKSurface.Canvas;
+                sKCanvas.DrawBitmap(sKBitmap, new SKPoint(), paint);
 
-            SKImage sKImage = sKSurface.Snapshot();
-            SKBitmap colorBitmap = SKBitmap.FromImage(sKImage);
+                SKImage sKImage = sKSurface.Snapshot();
+                SKBitmap colorBitmap = SKBitmap.FromImage(sKImage);
 
-            sKCanvas.ResetMatrix();
-            sKCanvas.Flush();
+                sKCanvas.ResetMatrix();
+                sKCanvas.Flush();
 
-            return colorBitmap;
+                return colorBitmap;
+            }
         }
         static SKBitmap ChangeLight(SKBitmap sKBitmap, float brightness)
         {
@@ -283,16 +297,18 @@ namespace Picture_GUI
                 ColorFilter = SKColorFilter.CreateColorMatrix(bright)
             };
 
-            SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height));
-            using (SKCanvas sKCanvas = sKSurface.Canvas)
+            using (SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height)))
             {
-                sKCanvas.DrawBitmap(sKBitmap, new SKPoint(), paint);
+                using (SKCanvas sKCanvas = sKSurface.Canvas)
+                {
+                    sKCanvas.DrawBitmap(sKBitmap, new SKPoint(), paint);
 
-                SKImage sKImage = sKSurface.Snapshot();
-                sKBitmap = SKBitmap.FromImage(sKImage);
+                    SKImage sKImage = sKSurface.Snapshot();
+                    sKBitmap = SKBitmap.FromImage(sKImage);
 
-                sKCanvas.ResetMatrix();
-                sKCanvas.Flush();
+                    sKCanvas.ResetMatrix();
+                    sKCanvas.Flush();
+                }
             }
 
             return sKBitmap;
