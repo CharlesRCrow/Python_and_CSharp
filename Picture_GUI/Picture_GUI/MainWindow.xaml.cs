@@ -18,6 +18,7 @@ using SkiaSharp.Views.WPF;
 using SkiaSharp;
 using static System.Net.Mime.MediaTypeNames;
 using static Picture_GUI.ColorMatrixes;
+using System.Diagnostics.Contracts;
 
 namespace Picture_GUI
 {
@@ -27,8 +28,9 @@ namespace Picture_GUI
 
     public partial class MainWindow : Window
     {
-        public SKBitmap originaBitmap { get; set; }
+        public SKBitmap originalBitmap { get; set; }
         public SKBitmap changedBitmap { get; set; }
+        public SKBitmap filterBitmap { get; set; }
 
         public MainWindow()
         {
@@ -52,8 +54,9 @@ namespace Picture_GUI
                     Uri fileUri = new Uri(openFileDialog.FileName);
                     BitmapImage bitmapImage = new BitmapImage(fileUri);
                     myImage.Source = bitmapImage;
-                    originaBitmap = SKBitmap.Decode(openFileDialog.FileName);
+                    originalBitmap = SKBitmap.Decode(openFileDialog.FileName);
                     changedBitmap = SKBitmap.Decode(openFileDialog.FileName); //change to clone later
+
 
                     btnSaveFile.IsEnabled = true;
                     btnSaveFile.Visibility = Visibility.Visible;
@@ -61,11 +64,14 @@ namespace Picture_GUI
                     colorSelection.Visibility = Visibility.Visible;
                     colorLabel.Visibility = Visibility.Visible;
 
+                    mirrorButton.IsEnabled = true;
+                    mirrorButton.Visibility = Visibility.Visible;
+
+                    rotateButton.IsEnabled = true;
+                    rotateButton.Visibility = Visibility.Visible;
+
                     resetButton.IsEnabled = true;
                     resetButton.Visibility = Visibility.Visible;
-
-                    RotateButton.IsEnabled = true;
-                    RotateButton.Visibility = Visibility.Visible;
 
                     BrightnessLabel.Visibility = Visibility.Visible;
                     ContrastLabel.Visibility = Visibility.Visible;
@@ -108,15 +114,15 @@ namespace Picture_GUI
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (changedBitmap == null)
+            if (originalBitmap == null)
             {
                 return;
             }
             try
             {
                 string key = ((KeyValuePair<string, float[]>)colorSelection.SelectedItem).Key;
-                changedBitmap = SelectColorMatrix(changedBitmap, key);
-                SKImage image = GenerateImage(changedBitmap);
+                filterBitmap = SelectColorMatrix(changedBitmap, key);
+                SKImage image = GenerateImage(filterBitmap);
                 myImage.Source = WPFExtensions.ToWriteableBitmap(image);
             }
             catch (Exception ex)
@@ -126,47 +132,59 @@ namespace Picture_GUI
         }
         private void UpdateImage(object sender, EventArgs e)
         {
-            changedBitmap = originaBitmap;
             if (IsLoaded)
             {
-                float brightness = (float)BrightnessSlider.Value;
-                float contrast = (float)ContrastSlider.Value;
-
-            if (ContrastSlider.Value < 1)
-            {
-                contrast = (float)(ContrastSlider.Value / 2) + 0.5f;
-                changedBitmap = ChangeContrast(changedBitmap, contrast);
-                SKImage ContrastImage = GenerateImage(changedBitmap);
-                myImage.Source = WPFExtensions.ToWriteableBitmap(ContrastImage);  //
-            }
-
-            if (sender is Button btn)
-            
+                if (filterBitmap != null)
                 {
-                if (btn.Name == "RotateButton")
-                {
-                     changedBitmap = Rotate(changedBitmap);
-                     SKImage RotateImage = GenerateImage(changedBitmap);
-                     myImage.Source = WPFExtensions.ToWriteableBitmap(RotateImage);
+                    changedBitmap = filterBitmap;
+                    filterBitmap = null;
                 }
-            }
+                else
+                {
+                    changedBitmap = originalBitmap;
+                }
+                float brightness = (float)BrightnessSlider.Value;
+                //float contrast = (float)ContrastSlider.Value;
 
-            changedBitmap = ChangeLight(changedBitmap, brightness);
-            SKImage image = GenerateImage(changedBitmap);
-            myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+                if (ContrastSlider.Value < 1)
+                {
+                    float contrast = (float)(ContrastSlider.Value / 2) + 0.5f;
+                    changedBitmap = ChangeContrast(changedBitmap, contrast);
+                    //SKImage image = GenerateImage(changedBitmap);
+                    //myImage.Source = WPFExtensions.ToWriteableBitmap(image);  //
+                }
+
+                if (sender is Button btn)
+                {
+                    if (btn.Name == "rotateButton")
+                    {
+                        changedBitmap = Rotate(changedBitmap);
+                        //SKImage image = GenerateImage(changedBitmap);
+                        //myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+                    }
+                    if (btn.Name == "mirrorButton")
+                    {
+                        changedBitmap = Mirror(changedBitmap);
+                    }
+                }
+                if (brightness != 0.0f)
+                {
+                    changedBitmap = ChangeLight(changedBitmap, brightness);
+                }
+                SKImage image = GenerateImage(changedBitmap);
+                myImage.Source = WPFExtensions.ToWriteableBitmap(image);
             }
         }
 
-
         private void Reset(object sender, EventArgs e)
         {
-            if (originaBitmap == null)
+            if (originalBitmap == null)
             {
                 return;
             }
             try
             {
-                changedBitmap = originaBitmap;
+                changedBitmap = originalBitmap;
                 SKImage image = GenerateImage(changedBitmap);
                 myImage.Source = WPFExtensions.ToWriteableBitmap(image);
             }
@@ -175,7 +193,6 @@ namespace Picture_GUI
                 MessageBox.Show(ex.Message);
             }
         }
-
 
         SKImage GenerateImage(SKBitmap sKBitmap)
         {
@@ -188,7 +205,7 @@ namespace Picture_GUI
             return sKImage;
         }
 
-        SKBitmap SelectColorMatrix(SKBitmap sKBitmap, string matrix_name)
+        static SKBitmap SelectColorMatrix(SKBitmap sKBitmap, string matrix_name)
         {
             float[] selectedColorMatrix = colorMatrixes[matrix_name];
 
@@ -280,8 +297,18 @@ namespace Picture_GUI
 
             return sKBitmap;
         }
+
+        static SKBitmap Mirror(SKBitmap sKBitmap)
+        {
+            SKCanvas sKCanvas = new SKCanvas(sKBitmap);
+            using (new SKAutoCanvasRestore(sKCanvas, true))
+            {
+                sKCanvas.Scale(-1, 1, sKBitmap.Width / 2.0f, 0);
+                sKCanvas.DrawBitmap(sKBitmap, 0, 0);
+            }
+            return sKBitmap;
+        }
     }
-    
 }
 
 
