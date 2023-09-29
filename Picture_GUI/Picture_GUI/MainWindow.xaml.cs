@@ -332,6 +332,16 @@ namespace Picture_GUI
             }
             return sKBitmap;
         }
+        // static SKBitmap Mirror(SKBitmap sKBitmap)
+        // {
+        //     SKCanvas sKCanvas = new SKCanvas(sKBitmap);
+        //     using (new SKAutoCanvasRestore(sKCanvas, true))
+        //     {
+        //         sKCanvas.Scale(1, -1, 0, sKBitmap.Height);
+        //         sKCanvas.DrawBitmap(sKBitmap, 0, 0);
+        //     }
+        //     return sKBitmap;
+        //}
     }
 }
 
