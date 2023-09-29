@@ -20,7 +20,7 @@ namespace Picture_GUI
         public SKBitmap originalBitmap { get; set; }
         public SKBitmap changedBitmap { get; set; }
         public SKBitmap filterBitmap { get; set; }
-        public int Angle { get; set; }
+        //public int Angle { get; set; }
 
         public MainWindow()
         {
@@ -45,8 +45,14 @@ namespace Picture_GUI
                     BitmapImage bitmapImage = new BitmapImage(fileUri);
                     myImage.Source = bitmapImage;
                     originalBitmap = SKBitmap.Decode(openFileDialog.FileName);
-                    Angle = 0;
+                    //Angle = 0;
                     //changedBitmap = SKBitmap.Decode(openFileDialog.FileName); //change to clone later
+
+                    ContrastSlider.Value = 0;
+                    BrightnessSlider.Value = 0;
+                    colorSelection.SelectedIndex = 0;
+                    changedBitmap = null;
+                    filterBitmap = null;
 
 
                     btnSaveFile.IsEnabled = true;
