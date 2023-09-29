@@ -41,19 +41,21 @@ namespace Picture_GUI
 
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    Uri fileUri = new Uri(openFileDialog.FileName);
-                    BitmapImage bitmapImage = new BitmapImage(fileUri);
-                    myImage.Source = bitmapImage;
-                    originalBitmap = SKBitmap.Decode(openFileDialog.FileName);
-                    //Angle = 0;
-                    //changedBitmap = SKBitmap.Decode(openFileDialog.FileName); //change to clone later
-
                     ContrastSlider.Value = 0;
                     BrightnessSlider.Value = 0;
                     colorSelection.SelectedIndex = 0;
                     changedBitmap = null;
-                    filterBitmap = null;
-
+                    filterBitmap = null;                   
+                    
+                    //Uri fileUri = new Uri(openFileDialog.FileName);
+                    //BitmapImage bitmapImage = new BitmapImage(fileUri);
+                    //myImage.Source = bitmapImage;
+                    originalBitmap = SKBitmap.Decode(openFileDialog.FileName);
+                    
+                    using (SKImage image = GenerateImage(originalBitmap))
+                    {
+                        myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+                    }
 
                     btnSaveFile.IsEnabled = true;
                     btnSaveFile.Visibility = Visibility.Visible;
@@ -94,7 +96,6 @@ namespace Picture_GUI
             try
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
-                //saveFileDialog.Filter = "Image files (*.PNG; *.JPG)|*.PNG;*.JPG|All files (*.*) | *.*";
                 saveFileDialog.Filter = "Image files (*.JPG;)|*.JPG;|All files (*.*) | *.*";
                 saveFileDialog.DefaultExt = "jpg";
 
@@ -134,8 +135,10 @@ namespace Picture_GUI
 
                 string key = ((KeyValuePair<string, float[]>)colorSelection.SelectedItem).Key;
                 filterBitmap = SelectColorMatrix(filterBitmap, key);
-                SKImage image = GenerateImage(filterBitmap);
-                myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+                using (SKImage image = GenerateImage(originalBitmap))
+                {
+                    myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+                }                
             }
             catch (Exception ex)
             {
@@ -156,13 +159,6 @@ namespace Picture_GUI
             if (IsLoaded)
             {
                 float brightness = (float)BrightnessSlider.Value;
-                //float contrast = (float)ContrastSlider.Value;
-
-                //if (ContrastSlider.Value < 1)
-                //{
-                    //float contrast = (float)(ContrastSlider.Value / 2) + 0.5f;
-                    //changedBitmap = ChangeContrast(changedBitmap, (float)(ContrastSlider.Value / 2) + 0.5f);
-                //}
 
                 if (sender is Button btn)
                 {
@@ -175,9 +171,9 @@ namespace Picture_GUI
                         changedBitmap = Mirror(changedBitmap);
                     }
                 }
-                //changedBitmap = ChangeContrast(changedBitmap, (float)(ContrastSlider.Value / 2) + 0.5f);
+                
                 changedBitmap = ChangeContrast(changedBitmap, (float)ContrastSlider.Value);
-                //Rotate(changedBitmap, (double) Angle);
+                
                 if (brightness != 0.0f)
                 {
                     changedBitmap = ChangeLight(changedBitmap, brightness);
@@ -297,7 +293,7 @@ namespace Picture_GUI
         }
         static SKBitmap ChangeLight(SKBitmap sKBitmap, float brightness)
         {
-            float[] bright = new float[]  //default to no change
+            float[] bright = new float[]  
                 {
                     (1+brightness), 0, 0, 0, 0,
                     0, (1+brightness), 0, 0, 0,

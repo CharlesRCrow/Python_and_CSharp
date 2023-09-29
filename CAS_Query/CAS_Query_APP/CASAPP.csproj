@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+      <DotNetCliToolReference
+        Include="Microsoft.EntityFrameworkCore.Tools.DotNet"
+        Version="1.0.0-msbuild3-final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
