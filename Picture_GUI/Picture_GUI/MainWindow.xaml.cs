@@ -20,10 +20,7 @@ namespace Picture_GUI
         public SKBitmap originalBitmap { get; set; }
         public SKBitmap changedBitmap { get; set; }
         public SKBitmap filterBitmap { get; set; }
-<<<<<<< HEAD
         //public int Angle { get; set; }
-=======
->>>>>>> c360b403 (Update colorMatrixes)
 
         public MainWindow()
         {
@@ -47,7 +44,6 @@ namespace Picture_GUI
                     Uri fileUri = new Uri(openFileDialog.FileName);
                     BitmapImage bitmapImage = new BitmapImage(fileUri);
                     myImage.Source = bitmapImage;
-<<<<<<< HEAD
                     originalBitmap = SKBitmap.Decode(openFileDialog.FileName);
                     //Angle = 0;
                     //changedBitmap = SKBitmap.Decode(openFileDialog.FileName); //change to clone later
@@ -59,12 +55,6 @@ namespace Picture_GUI
                     filterBitmap = null;
 
 
-=======
-                    originaBitmap = SKBitmap.Decode(openFileDialog.FileName);
-                    changedBitmap = SKBitmap.Decode(openFileDialog.FileName); //change to clone later
-                    
-                    
->>>>>>> c360b403 (Update colorMatrixes)
                     btnSaveFile.IsEnabled = true;
                     btnSaveFile.Visibility = Visibility.Visible;
 
@@ -130,7 +120,6 @@ namespace Picture_GUI
             if (originalBitmap == null)
             {
                 return;
-<<<<<<< HEAD
             }
             try
             {
@@ -145,13 +134,6 @@ namespace Picture_GUI
 
                 string key = ((KeyValuePair<string, float[]>)colorSelection.SelectedItem).Key;
                 filterBitmap = SelectColorMatrix(filterBitmap, key);
-=======
-            }            
-            try               
-            { 
-                string key = ((KeyValuePair<string, float[]>)colorSelection.SelectedItem).Key;
-                filterBitmap = SelectColorMatrix(changedBitmap, key);
->>>>>>> c360b403 (Update colorMatrixes)
                 SKImage image = GenerateImage(filterBitmap);
                 myImage.Source = WPFExtensions.ToWriteableBitmap(image);
             }
@@ -173,7 +155,6 @@ namespace Picture_GUI
 
             if (IsLoaded)
             {
-<<<<<<< HEAD
                 float brightness = (float)BrightnessSlider.Value;
                 //float contrast = (float)ContrastSlider.Value;
 
@@ -182,41 +163,18 @@ namespace Picture_GUI
                     //float contrast = (float)(ContrastSlider.Value / 2) + 0.5f;
                     //changedBitmap = ChangeContrast(changedBitmap, (float)(ContrastSlider.Value / 2) + 0.5f);
                 //}
-=======
-                if (filterBitmap != null)
-                {
-                    changedBitmap = filterBitmap;
-                    filterBitmap = null;
-                }
-                float brightness = (float) BrightnessSlider.Value;
-                float contrast = (float) ContrastSlider.Value;
-
-                if (ContrastSlider.Value < 1)
-                {
-                    contrast = (float) (ContastSlider.Value / 2) + 0.5f;
-                    changedBitmap = ChangeContrast(changedBitmap, contrast);
-                    //SKImage image = GenerateImage(changedBitmap);
-                    //myImage.Source = WPFExtensions.ToWriteableBitmap(image);  //
-                }
->>>>>>> c360b403 (Update colorMatrixes)
 
                 if (sender is Button btn)
                 {
                     if (btn.Name == "rotateButton")
                     {
                         changedBitmap = Rotate(changedBitmap);
-<<<<<<< HEAD
-=======
-                        //SKImage image = GenerateImage(changedBitmap);
-                        //myImage.Source = WPFExtensions.ToWriteableBitmap(image);
->>>>>>> c360b403 (Update colorMatrixes)
                     }
                     if (btn.Name == "mirrorButton")
                     {
                         changedBitmap = Mirror(changedBitmap);
                     }
                 }
-<<<<<<< HEAD
                 //changedBitmap = ChangeContrast(changedBitmap, (float)(ContrastSlider.Value / 2) + 0.5f);
                 changedBitmap = ChangeContrast(changedBitmap, (float)ContrastSlider.Value);
                 //Rotate(changedBitmap, (double) Angle);
@@ -228,14 +186,6 @@ namespace Picture_GUI
                 {
                     myImage.Source = WPFExtensions.ToWriteableBitmap(image);
                 }
-=======
-                if (brightness != 0.0f)
-                {
-                    changedBitmap = ChangeLight(changedBitmap brightness);
-                }
-                SKImage image = GenerateImage(changedBitmap);
-                myImage.Source = WPFExtensions.ToWriteableBitmap(image);
->>>>>>> c360b403 (Update colorMatrixes)
             }
         }
 
@@ -247,7 +197,6 @@ namespace Picture_GUI
             }
             try
             {
-<<<<<<< HEAD
                 using (SKImage image = GenerateImage(originalBitmap))
                 {
                     myImage.Source = WPFExtensions.ToWriteableBitmap(image);
@@ -258,11 +207,6 @@ namespace Picture_GUI
                 colorSelection.SelectedIndex = 0;
                 changedBitmap = null;
                 filterBitmap = null;
-=======
-                changedBitmap = originalBitmap;
-                SKImage image = GenerateImage(changedBitmap);
-                myImage.Source = WPFExtensions.ToWriteableBitmap(image);
->>>>>>> c360b403 (Update colorMatrixes)
             }
             catch (Exception ex)
             {
@@ -329,38 +273,15 @@ namespace Picture_GUI
             }
             return rotatedBitmap;
         }
-<<<<<<< HEAD
 
         static SKBitmap ChangeContrast(SKBitmap sKBitmap, float contrast)
-=======
-        
-        static SKBitmap ChangeContrast(SKBitmap sKbitmap, float contrast)
->>>>>>> c360b403 (Update colorMatrixes)
         {
             SKPaint paint = new SKPaint
             {
                 ColorFilter = SKColorFilter.CreateHighContrast(false, SKHighContrastConfigInvertStyle.NoInvert, contrast)
             };
 
-<<<<<<< HEAD
             using (SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height)))
-=======
-            SKSurface sKSurface = SKSurface.Create(new SKImageInfo(sKBitmap.Width, sKBitmap.Height));
-            SKCanvas sKCanvas = sKSurface.Canvas;
-            sKCanvas.DrawBitmap(sKBitmap, new SKPoint(), paint);
-
-            SKImage sKImage = sKSurface.Snapshot();
-            SKBitmap colorBitmap = SKBitmap.FromImage(sKImage);
-
-            sKCanvas.ResetMatrix();
-            sKCanvas.Flush();
-
-            return colorBitmap;
-        }
-        static SKBitmap ChangeLight(SKBitmap sKBitmap, float brightness)
-        {
-            float[][] light = new float[][] 
->>>>>>> c360b403 (Update colorMatrixes)
             {
                 SKCanvas sKCanvas = sKSurface.Canvas;
                 sKCanvas.DrawBitmap(sKBitmap, new SKPoint(), paint);
@@ -378,7 +299,6 @@ namespace Picture_GUI
         {
             float[] bright = new float[]  //default to no change
                 {
-<<<<<<< HEAD
                     (1+brightness), 0, 0, 0, 0,
                     0, (1+brightness), 0, 0, 0,
                     0, 0, (1+brightness), 0, 0,
@@ -404,34 +324,18 @@ namespace Picture_GUI
             }
 
             return sKBitmap;
-=======
-                    g.DrawImage(brightBitmap, rc, 0, 0, brightBitmap.Width, brightBitmap.Height, GraphicsUnit.Pixel, imgattr);
-                } 
-
-            sKBitmap = ToSKBitmap(brightBitmap);        
-            return sKBitmap;    
->>>>>>> c360b403 (Update colorMatrixes)
         }
 
         static SKBitmap Mirror(SKBitmap sKBitmap)
         {
             SKCanvas sKCanvas = new SKCanvas(sKBitmap);
-<<<<<<< HEAD
             using (new SKAutoCanvasRestore(sKCanvas, true))
-=======
-            using(new SKAutoCanvasRestore(sKCanvas, true))
->>>>>>> c360b403 (Update colorMatrixes)
             {
                 sKCanvas.Scale(-1, 1, sKBitmap.Width / 2.0f, 0);
                 sKCanvas.DrawBitmap(sKBitmap, 0, 0);
             }
-<<<<<<< HEAD
             return sKBitmap;
         }
-=======
-            return sKBitmap;            
-        }    
->>>>>>> c360b403 (Update colorMatrixes)
     }
 }
 
