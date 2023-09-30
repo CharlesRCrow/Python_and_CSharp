@@ -58,94 +58,72 @@ namespace Picture_GUI
                 1, 0, 0, 0, 0,
                 0, 1, 0, 0, 0,
                 0, 0, 0, 1, 0
-            };
-<<<<<<< HEAD
+        };
+
         static float[] MatrixElementsRed = new float[] {
-=======
-            static float[] MatrixElementsRed = new float[] {
->>>>>>> c360b403 (Update colorMatrixes)
                 3, 0, 0, 0, 0,
                 0, 1, 0, 0, 0,
                 0, 0, 1, 0, 0,
                 .2f, .2f, .2f, 0, 1
             };
-<<<<<<< HEAD
+
+
         static float[] MatrixElementsGreen = new float[] {
-=======
-            static float[] MatrixElementsGreen = new float[] {
->>>>>>> c360b403 (Update colorMatrixes)
                 1, 0, 0, 0, 0,
                 0, 3, 0, 0, 0,
                 0, 0, 1, 0, 0,
                 .2f, .2f, .2f, 0, 1
             };
-<<<<<<< HEAD
+
+
         static float[] MatrixElementsBlue = new float[] {
-=======
-            static float[] MatrixElementsBlue = new float[] {
->>>>>>> c360b403 (Update colorMatrixes)
                 1, 0, 0, 0, 0,
                 0, 1, 0, 0, 0,
                 0, 0, 3, 0, 0,
                 .2f, .2f, .2f, 0, 1
-<<<<<<< HEAD
             };
+
         static float[] rgbBgr = new float[] {
-=======
-            };                        
-            static float[] rgbBgr = new float[] {
->>>>>>> c360b403 (Update colorMatrixes)
+
                 0, 0, 1, 0, 0,
                 0, 1, 0, 0, 0,
                 1, 0, 0, 0, 0,
                 0, 0, 0, 1, 0
             };
-<<<<<<< HEAD
+
         static float[] rgbGrb = new float[] {
-=======
-            static float[] rgbGrb = new float[] {
->>>>>>> c360b403 (Update colorMatrixes)
                 0, 1, 0, 0, 0,
                 1, 0, 0, 0, 0,
                 0, 0, 1, 0, 0,
                 0, 0, 0, 1, 0
             };
-<<<<<<< HEAD
+
         static float[] rgbBrg = new float[] {
-=======
-            static float[] rgbBrg = new float[] {
->>>>>>> c360b403 (Update colorMatrixes)
                 0, 0, 1, 0, 0,
                 1, 0, 0, 0, 0,
                 0, 1, 0, 0, 0,
                 0, 0, 0, 1, 0
             };
-<<<<<<< HEAD
+
         static float[] rgbGbr = new float[] {
-=======
-            static float[] rgbGbr = new float[] {
->>>>>>> c360b403 (Update colorMatrixes)
+
                 0, 1, 0, 0, 0,
                 0, 0, 1, 0, 0,
                 1, 0, 0, 0, 0,
                 0, 0, 0, 1, 0
             };
-<<<<<<< HEAD
-        static float[] rgbRbg = new float[] {
-=======
-            static float[] rgbRbg = new float[] {
->>>>>>> c360b403 (Update colorMatrixes)
+
+        static readonly float[] rgbRbg = new float[] {
+
                 1, 0, 0, 0, 0,
                 0, 0, 1, 0, 0,
                 0, 1, 0, 0, 0,
                 0, 0, 0, 1, 0
-<<<<<<< HEAD
             };
+
+
         static float[] polaroid = new float[] {
-=======
-            };                        
-            static float[] polaroid = new float[] {
->>>>>>> c360b403 (Update colorMatrixes)
+
                 1.438f, -0.062f, -0.062f, 0, 0,
                 -0.122f, 1.378f, -0.122f, 0, 0,
                 -0.016f, -0.016f, 1.483f, 0, 0,
@@ -157,8 +135,8 @@ namespace Picture_GUI
                 0f,  0f, -1f, 0f, 1f,
                 0f,  0f,  0f, 1f, 0f
             };
-        public static Dictionary<string, float[]> colorMatrixes = new Dictionary<string, float[]>()
-            {
+        public static Dictionary<string, float[]> cMatrix = new Dictionary<string, float[]>()
+        {
                 {"No_change", noChange},
                 {"MonoChrome", monoChrome},
                 {"Pastel", pastel},
@@ -173,14 +151,10 @@ namespace Picture_GUI
                 {"MatrixElementsGreen", MatrixElementsGreen},
                 {"MatrixElementsBlue", MatrixElementsBlue},
                 {"Blue|Green|Red", rgbBgr},
-<<<<<<< HEAD
                 {"Blue|Red|Green", rgbBrg},
-=======
-                {"Blue|Red|Green", rgbBrg},                
->>>>>>> c360b403 (Update colorMatrixes)
                 {"Green|Red|Blue", rgbGrb},
                 {"Green|Blue|Red", rgbGbr},
                 {"Red|Blue|Green", rgbRbg}
-            };
+        };
     }
 }

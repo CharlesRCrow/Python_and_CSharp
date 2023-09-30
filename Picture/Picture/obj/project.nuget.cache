@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "2dG20wP4BVz9GqUCeWMWndISOHAqIlDqoTzZpLs1n/iwU/hxzWJ2Yqy1WjBOdLBpxrAETMiFFtnimO+NIGuRpg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\charl\\OneDrive\\Documents\\GitHub\\chemistry_tools\\Picture\\Picture\\Picture.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\charl\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.9\\microsoft.netcore.platforms.3.1.9.nupkg.sha512",
+    "C:\\Users\\charl\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\charl\\.nuget\\packages\\skiasharp\\2.88.6\\skiasharp.2.88.6.nupkg.sha512",
+    "C:\\Users\\charl\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.6\\skiasharp.nativeassets.macos.2.88.6.nupkg.sha512",
+    "C:\\Users\\charl\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.6\\skiasharp.nativeassets.win32.2.88.6.nupkg.sha512",
+    "C:\\Users\\charl\\.nuget\\packages\\skiasharp.views.desktop.common\\2.88.6\\skiasharp.views.desktop.common.2.88.6.nupkg.sha512",
+    "C:\\Users\\charl\\.nuget\\packages\\skiasharp.views.wpf\\2.88.6\\skiasharp.views.wpf.2.88.6.nupkg.sha512",
+    "C:\\Users\\charl\\.nuget\\packages\\system.drawing.common\\4.7.3\\system.drawing.common.4.7.3.nupkg.sha512"
+  ],
+  "logs": []
+}
