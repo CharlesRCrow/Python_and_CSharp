@@ -20,9 +20,8 @@ namespace Picture_GUI
     {
         public SKBitmap originalBitmap { get; set; }
         public SKBitmap changedBitmap { get; set; }
-        public SKBitmap changedBitmap2 { get; set; }
         public SKBitmap filterBitmap { get; set; }
-        public int Angle { get; set; }
+        //public int Angle { get; set; }
        
 
         public MainWindow()
@@ -49,7 +48,6 @@ namespace Picture_GUI
                     colorSelection.SelectedIndex = 0;
                     changedBitmap = null;
                     filterBitmap = null;
-                    Angle = 0;
                     
 
                     //Uri fileUri = new Uri(openFileDialog.FileName);
@@ -77,8 +75,8 @@ namespace Picture_GUI
                     mirrorButton.IsEnabled = true;
                     mirrorButton.Visibility = Visibility.Visible;
 
-                    rotateButton.IsEnabled = true;
-                    rotateButton.Visibility = Visibility.Visible;
+                    //rotateButton.IsEnabled = true;
+                    //rotateButton.IsEnabled = Visibility.Visible;
 
                     resetButton.IsEnabled = true;
                     resetButton.Visibility = Visibility.Visible;
@@ -152,11 +150,11 @@ namespace Picture_GUI
         }
         private void UpdateImage(object sender, EventArgs e)
         {
-            if (filterBitmap == null & changedBitmap== null)
+            if (filterBitmap == null)
             {
                 changedBitmap = originalBitmap;
             }
-            else if (filterBitmap != null & changedBitmap == null)
+            else
             {
                 changedBitmap = filterBitmap;
             }
@@ -164,6 +162,18 @@ namespace Picture_GUI
             if (IsLoaded)
             {
                 float brightness = (float)BrightnessSlider.Value;
+
+                if (sender is Button btn)
+                {
+                    if (btn.Name == "vFlipButton")
+                    {
+                        changedBitmap = VFlip(changedBitmap);
+                    }
+                    if (btn.Name == "mirrorButton")
+                    {
+                        changedBitmap = Mirror(changedBitmap);
+                    }
+                }
 
                 changedBitmap = ChangeContrast(changedBitmap, (float)ContrastSlider.Value);
 
@@ -175,40 +185,6 @@ namespace Picture_GUI
                 {
                     myImage.Source = WPFExtensions.ToWriteableBitmap(image);
                 }
-            }
-        }
-        private void ImageBtn(object sender, RoutedEventArgs e)
-        {
-            if (filterBitmap == null & changedBitmap == null)
-            {
-                changedBitmap2 = originalBitmap;
-            }
-            else if (filterBitmap != null & changedBitmap == null)
-            {
-                changedBitmap2 = filterBitmap;
-            }
-            if (sender is Button btn)
-            {
-                if (btn.Name == "rotateButton")
-                {
-                    if (Angle == 270)
-                    {
-                        Angle = 0;
-                    }
-                    else
-                    {
-                        Angle += 90;
-                    }
-                    changedBitmap = Rotate(changedBitmap2, (double) Angle);
-                }
-                if (btn.Name == "mirrorButton")
-                {
-                    changedBitmap = Mirror(changedBitmap2);
-                }
-            }
-            using (SKImage image = GenerateImage(changedBitmap))
-            {
-                myImage.Source = WPFExtensions.ToWriteableBitmap(image);
             }
         }
 

@@ -27,8 +27,8 @@
                 <Slider Name="ContrastSlider" ValueChanged="UpdateImage" VerticalAlignment="Center" Value="0" Visibility="Hidden" IsSnapToTickEnabled="True" 
                     Minimum="-1" Maximum="1" LargeChange="0.2" TickFrequency="0.02" SmallChange="0.02" Margin="0,0,0,10"/>
                 <Button Name="resetButton" Click="Reset" FontSize="16" IsEnabled="False" Visibility="Hidden" Margin="0,50,0,10">Reset</Button>
-                <Button Name="mirrorButton" Click="ImageBtn" FontSize="16" IsEnabled="False" Visibility="Hidden" Margin="0,30,0,10" >Mirror</Button>
-                <Button Name="rotateButton" Click="ImageBtn" FontSize="16" IsEnabled="False" Visibility="Hidden">Rotate</Button>
+                <Button Name="mirrorButton" Click="UpdateImage" FontSize="16" IsEnabled="False" Visibility="Hidden" Margin="0,30,0,10" >Mirror</Button>
+                <Button Name="vFlipButton" Click="UpdateImage" FontSize="16" IsEnabled="False" Visibility="Hidden">VFlip</Button>
                 <Button Name="btnSaveFile" Click="btnSaveFile_Click" FontSize="16" IsEnabled="False" Visibility="Hidden" Margin="0,50,0,10">Save file</Button>
             </StackPanel>
         </WrapPanel>
