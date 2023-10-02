@@ -21,7 +21,7 @@ namespace Picture_GUI
         public SKBitmap originalBitmap { get; set; }
         public SKBitmap changedBitmap { get; set; }
         public SKBitmap filterBitmap { get; set; }
-        //public int Angle { get; set; }
+        public SKBitmap buttonBitmap { get; set; }
        
 
         public MainWindow()
@@ -49,10 +49,6 @@ namespace Picture_GUI
                     changedBitmap = null;
                     filterBitmap = null;
                     
-
-                    //Uri fileUri = new Uri(openFileDialog.FileName);
-                    //BitmapImage bitmapImage = new BitmapImage(fileUri);
-                    //myImage.Source = bitmapImage;
                     originalBitmap = SKBitmap.Decode(openFileDialog.FileName);
 
                     using (SKImage image = GenerateImage(originalBitmap))
@@ -75,8 +71,8 @@ namespace Picture_GUI
                     mirrorButton.IsEnabled = true;
                     mirrorButton.Visibility = Visibility.Visible;
 
-                    //rotateButton.IsEnabled = true;
-                    //rotateButton.IsEnabled = Visibility.Visible;
+                    rotateButton.IsEnabled = true;
+                    rotateButton.IsEnabled = Visibility.Visible;
 
                     resetButton.IsEnabled = true;
                     resetButton.Visibility = Visibility.Visible;
@@ -125,15 +121,20 @@ namespace Picture_GUI
             {
                 return;
             }
+            
             try
             {
-                if (changedBitmap == null)
+                if (changedBitmap == null & buttonBitmap == null & filterBitmap == null)
                 {
                     filterBitmap = originalBitmap;
                 }
-                else
+                else if (changedBitmap != null)
                 {
                     filterBitmap = changedBitmap;
+                }
+                else if (buttonBitmap != null)
+                {
+                    filterBitmap = buttonBitmap;
                 }
 
                 string key = ((KeyValuePair<string, float[]>)colorSelection.SelectedItem).Key;
@@ -142,6 +143,8 @@ namespace Picture_GUI
                 {
                     myImage.Source = WPFExtensions.ToWriteableBitmap(image);
                 }
+                buttonBitmap = null;
+                changedBitmap = null;
             }
             catch (Exception ex)
             {
@@ -150,32 +153,24 @@ namespace Picture_GUI
         }
         private void UpdateImage(object sender, EventArgs e)
         {
-            if (filterBitmap == null)
+            if (filterBitmap == null & buttonBitmap == null)
             {
                 changedBitmap = originalBitmap;
             }
-            else
+            else if (filterBitmap != null)
             {
                 changedBitmap = filterBitmap;
             }
-
+            else if (buttonBitmap != null)
+            {
+                changedBitmap = buttonBitmap;
+            }
             if (IsLoaded)
             {
                 float brightness = (float)BrightnessSlider.Value;
+                float contrast = (float)ContrastSlider.Value
 
-                if (sender is Button btn)
-                {
-                    if (btn.Name == "vFlipButton")
-                    {
-                        changedBitmap = VFlip(changedBitmap);
-                    }
-                    if (btn.Name == "mirrorButton")
-                    {
-                        changedBitmap = Mirror(changedBitmap);
-                    }
-                }
-
-                changedBitmap = ChangeContrast(changedBitmap, (float)ContrastSlider.Value);
+                changedBitmap = ChangeContrast(changedBitmap, contrast);
 
                 if (brightness != 0.0f)
                 {
@@ -186,6 +181,40 @@ namespace Picture_GUI
                     myImage.Source = WPFExtensions.ToWriteableBitmap(image);
                 }
             }
+        }
+
+        private void UpdateButton(object sender, Eventargs e)
+        {
+            if (filterBitmap == null & changedBitmap == null & buttonBitmap == null)
+            {
+                buttonBitmap = originalBitmap;
+            }
+            else if (filterBitmap != null)
+            {
+                buttonBitmap = filterBitmap;
+            }
+            else if (changedBitmap != null)
+            {
+                buttonBitmap = changedBitmap;
+            }
+            if (sender is Button btn)
+            {
+                if (btn.Name == "rotateButton")
+                {
+                    buttonBitmap = Rotate(buttonBitmap);
+                }
+                
+                if (btn.Name == "mirrorButton")
+                {
+                    buttonBitmap = Mirror(buttonBitmap);
+                }
+            }
+             using (SKImage image = GenerateImage(buttonBitmap))
+            {
+                myImage.Source = WPFExtensions.ToWriteableBitmap(image);
+            }
+            filterBitmap = null;
+            changedBitmap = null;    
         }
 
         private void Reset(object sender, EventArgs e)
@@ -206,6 +235,7 @@ namespace Picture_GUI
                 colorSelection.SelectedIndex = 0;
                 changedBitmap = null;
                 filterBitmap = null;
+                buttonBitmap = null;
             }
             catch (Exception ex)
             {
