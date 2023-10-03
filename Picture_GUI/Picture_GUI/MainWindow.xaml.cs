@@ -72,7 +72,7 @@ namespace Picture_GUI
                     mirrorButton.Visibility = Visibility.Visible;
 
                     rotateButton.IsEnabled = true;
-                    rotateButton.IsEnabled = Visibility.Visible;
+                    rotateButton.Visibility = Visibility.Visible;
 
                     resetButton.IsEnabled = true;
                     resetButton.Visibility = Visibility.Visible;
@@ -82,6 +82,9 @@ namespace Picture_GUI
 
                     BrightnessSlider.Visibility = Visibility.Visible;
                     ContrastSlider.Visibility = Visibility.Visible;
+
+                    BlurLabel.Visibility= Visibility.Visible;
+                    BlurSlider.Visibility = Visibility.Visible;
                 }
             }
             catch (Exception ex)
@@ -117,6 +120,7 @@ namespace Picture_GUI
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            filterBitmap = null;
             if (originalBitmap == null)
             {
                 return;
@@ -143,8 +147,8 @@ namespace Picture_GUI
                 {
                     myImage.Source = WPFExtensions.ToWriteableBitmap(image);
                 }
-                buttonBitmap = null;
-                changedBitmap = null;
+                //buttonBitmap = null;
+                //changedBitmap = null;
             }
             catch (Exception ex)
             {
@@ -168,7 +172,8 @@ namespace Picture_GUI
             if (IsLoaded)
             {
                 float brightness = (float)BrightnessSlider.Value;
-                float contrast = (float)ContrastSlider.Value
+                float contrast = (float)ContrastSlider.Value;
+                float blur = (float)BlurSlider.Value;
 
                 changedBitmap = ChangeContrast(changedBitmap, contrast);
 
@@ -176,6 +181,11 @@ namespace Picture_GUI
                 {
                     changedBitmap = ChangeLight(changedBitmap, brightness);
                 }
+                if (blur != 0.0f)
+                {
+                    changedBitmap = Blur(changedBitmap, blur);
+                }
+
                 using (SKImage image = GenerateImage(changedBitmap))
                 {
                     myImage.Source = WPFExtensions.ToWriteableBitmap(image);
@@ -183,8 +193,9 @@ namespace Picture_GUI
             }
         }
 
-        private void UpdateButton(object sender, Eventargs e)
+        private void UpdateButton(object sender, EventArgs e)
         {
+            
             if (filterBitmap == null & changedBitmap == null & buttonBitmap == null)
             {
                 buttonBitmap = originalBitmap;
@@ -373,17 +384,20 @@ namespace Picture_GUI
             //mirrored ^= true;
             return sKBitmap;
         }
-        static SKBitmap VFlip(SKBitmap sKBitmap)
+        static SKBitmap Blur(SKBitmap sKBitmap, float blur = 0)
         {
+
             SKCanvas sKCanvas = new SKCanvas(sKBitmap);
-            using (new SKAutoCanvasRestore(sKCanvas, true))
+            using (var filter = SKImageFilter.CreateBlur(blur, blur))
+            using (var paint = new SKPaint())
             {
-                sKCanvas.Scale(1, -1, 0, sKBitmap.Height);
-                sKCanvas.DrawBitmap(sKBitmap, 0, 0);
+                paint.ImageFilter = filter;
+                sKCanvas.DrawBitmap(sKBitmap, SKRect.Create(sKBitmap.Width, sKBitmap.Height), paint);
             }
             return sKBitmap;
         }
     }
+    
 }
 
 
