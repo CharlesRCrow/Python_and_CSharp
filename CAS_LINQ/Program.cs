@@ -8,6 +8,7 @@ using System.Text;
 using CAS_LINQ.Data;
 using CAS_LINQ.Models;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.ModelConfiguration.Configuration;
 
 namespace CAS_LINQ;
 
@@ -20,10 +21,8 @@ public class Program
     static void Main(string[] args)
     {
         Console.WriteLine("Search: ");
-        string? search;
-        //search = Console.ReadLine();
-        search = "Formaldehyde";
-        //search = "borax";
+        
+        string search = "hydro";
         
         if (search == null)
         {
@@ -37,31 +36,44 @@ public class Program
     {
         using (CasContext db = new())
         {
-            //IQueryable<Ca>? cas = db.Cas?
-            //var results = db.Cas.FromSql($"SELECT * FROM CAS WHERE ChemName LIKE '{search}% LIMIT 30'").ToList();
-            var results = db.Cas.FromSql($"SELECT * FROM CAS WHERE ChemName LIKE {search} LIMIT 30").ToList();
-            Console.WriteLine("Activity, Chemname, CAS");
+            FormattableString input = $"SELECT * FROM CAS WHERE ChemName LIKE {search} LIMIT 30";
+            var results = db.Cas.FromSql(input).ToList();
+            Console.WriteLine("Activity  |  CAS  |  Chemname");
             foreach (var item in results)
             {
-                Console.WriteLine($"{item.Activity} , {item.ChemName}, {item.Casrn}");
+                Console.WriteLine($"{item.Activity} | {item.Casrn} | {item.ChemName}");
             }
         }
-        using (CasContext db = new())
+        
+        using( CasContext db = new())
         {
-            var q =
-            from a in db.Cas
-            where a.Id == "5"
-            select a;
-            
-            //var results = q.ToList();
-            var results = q;
-
-            foreach (var result in results)
+            try
             {
-                Console.WriteLine(result);
+                IQueryable<Ca>? cas = db.Cas?.Where(p => EF.Functions.Like(p.ChemName, $"%{search}%"))
+                    .Where(p => p.Activity == "ACTIVE")
+                    .Where(p => p.Flag == "")
+                    .OrderBy(p => p.ChemName)
+                    .Take(40);
+
+                if (cas == null)
+                {
+                    Console.WriteLine("None Found");
+                    return;
+                }
+
+                foreach (Ca p in cas)
+                {
+                    Console.WriteLine($"{p.Activity} | {p.Casrn} | {p.ChemName}");
+                }
+                return;
             }
-            Console.WriteLine($"{results}");
-            
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return;
+            }
         }
+        
+
     }
 }
