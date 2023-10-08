@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CASAPP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Width="2000" Height="1200">
+    <DockPanel Margin="10" Background="MediumPurple" >
+        <WrapPanel DockPanel.Dock="Top" Margin="10,0,0,10" HorizontalAlignment="Center">
+            <StackPanel Background="MediumPurple"  >
+                <StackPanel>
+                    <Label FontWeight="Bold" FontSize="40" Foreground="White"  Margin="0,10,0,10" HorizontalAlignment="Center">CAS Search</Label>
+                    <TextBox Name="SearchBox" Margin="1,0,0,0" TextChanged="textChangedEventHandler" Width="300" MaxWidth="300" />
+                </StackPanel>
+                <TextBlock Name="NumberResults" FontWeight="Bold" FontSize="25" Foreground="White" Margin="0,10,0,10" HorizontalAlignment="Center"></TextBlock>
+                <Button Name="btnSaveFile" Click="btnSaveFile_Click" FontSize="16" IsEnabled="False" Visibility="Hidden" Margin="0,20,0,10" MaxWidth="300">Save Results to CSV</Button>
+                <DataGrid Name="DataGridResults"  HorizontalAlignment="Center" Margin="10,10,10,10" Background="MediumPurple" AlternatingRowBackground="Cornsilk" MaxWidth="1800" MaxHeight="800" Visibility="Hidden"/>
+            </StackPanel>
+        </WrapPanel>
+        <WrapPanel DockPanel.Dock="Bottom" Margin="10,0,0,10" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock  FontSize="20" Foreground="White" Margin="0,0,10,0">Version 10-08-23</TextBlock>
+        </WrapPanel>
+    </DockPanel>
 
-    </Grid>
 </Window>
