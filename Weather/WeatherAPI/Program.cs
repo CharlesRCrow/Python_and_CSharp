@@ -2,6 +2,10 @@
 using System.Net.Cache;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using WeatherAPI.Forecast;
+using WeatherAPI.ForecastHourly;
 
 namespace WeatherAPI
 {
@@ -17,6 +21,8 @@ namespace WeatherAPI
         {
             try
             {
+                
+                
                 HttpClient client = new HttpClient();
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://api.weather.gov/points/29.9007241,-95.5888448");
                 
@@ -28,9 +34,15 @@ namespace WeatherAPI
 
                 HttpResponseMessage httpResponseMessage = await client.SendAsync(request);
                 string response = await httpResponseMessage.Content.ReadAsStringAsync();
-
                 Console.WriteLine(response);
-                    
+
+
+                JObject root = JObject.Parse(response);
+
+                var token = root.SelectToken("properties");
+                var office = token.SelectToken("gridX");
+                Console.WriteLine(office);            
+
             }
             
             catch (Exception ex)
