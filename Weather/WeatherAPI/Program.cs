@@ -22,7 +22,14 @@ namespace WeatherAPI
         {
             try
             {
-                string address = "El Paso, Texas";
+                string street = "";
+                string city = "Houston";
+                string state = "TX";
+                string postalCode = "77065";
+                string country = "US";
+                         
+                string address = $"Karnes City, Texas";
+                //string address = $"city={city}&state={state}&postalcode={postalCode}";
                 
                 // use geocode api to find lat and long by address
                 HttpClient locationClient = new HttpClient();
@@ -32,6 +39,11 @@ namespace WeatherAPI
                 string locationResponse = await locationHttpResponseMessage.Content.ReadAsStringAsync();
                 
                 // process locationResponse into usable form for NewtonSoft
+                if (locationResponse == "[]")
+                {
+                    Console.WriteLine("Invalid Address");
+                    return;
+                }
                 string firstResponse = locationResponse.Split('{', '}')[1];
                 firstResponse = "{" + firstResponse + "}";
                 
@@ -66,23 +78,32 @@ namespace WeatherAPI
 
                 string forcastResponse = await httpResponseForecast.Content.ReadAsStringAsync();
 
-                JObject forecast = (JObject)JObject.Parse(forcastResponse)["properties"];
+                JObject forecast = (JObject)JObject.Parse(forcastResponse)["properties"]!;
 
-                JArray dailyForecast = (JArray)forecast["periods"];
+                JArray dailyForecast = (JArray)forecast["periods"]!;
 
-                Console.WriteLine(address);
-                Console.WriteLine("Temp \t WindSpeed  \t Forecast");
-                
-                foreach (var day in dailyForecast)
+                if (dailyForecast == null)
                 {
-                    var dailyTemp = day["temperature"];
-                    var dailyName = day["name"];
-                    var dailyWindSpeed = day["windSpeed"];
-                    var dailyWindDirection = day["windDirection"];
-                    var dailyHumidity = day["relativeHumidity"];
-                    var detailedForecast = day["detailedForecast"];
+                    Console.WriteLine("Error: No Forecast");
+                    return;
+                }
+                else
+                {               
+                    Console.WriteLine($"\t\t\t {address}");
+                    Console.WriteLine(string.Concat(Enumerable.Repeat("----", 30)));
+                    Console.WriteLine("Temp \t\t WindSpeed  \t\t\t Forecast");
+                    
+                    foreach (var day in dailyForecast)
+                    {
+                        var dailyTemp = day["temperature"];
+                        var dailyName = day["name"];
+                        var dailyWindSpeed = day["windSpeed"];
+                        var dailyWindDirection = day["windDirection"];
+                        var dailyHumidity = day["relativeHumidity"];
+                        var detailedForecast = day["detailedForecast"];
 
-                    Console.WriteLine($"{dailyTemp} \t {dailyWindSpeed} \t {dailyWindDirection} \t {dailyName} : {detailedForecast}");
+                        Console.WriteLine($"{dailyTemp} \t {dailyWindSpeed} \t {dailyWindDirection} \t {dailyName} : {detailedForecast}");
+                    }
                 }
             }
             
@@ -90,6 +111,11 @@ namespace WeatherAPI
             {
                 Console.WriteLine(ex);
             }
+        }
+        private static string GeoCode()
+        {
+            string address ="";
+            return address;
         }
     }
 }
