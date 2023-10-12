@@ -15,3 +15,4 @@
 /workspaces/chemistry_tools/Weather/WeatherAPI/obj/Debug/net7.0/ref/WeatherAPI.dll
 /workspaces/chemistry_tools/Weather/WeatherAPI/bin/Debug/net7.0/Newtonsoft.Json.dll
 /workspaces/chemistry_tools/Weather/WeatherAPI/obj/Debug/net7.0/WeatherAPI.csproj.CopyComplete
+/workspaces/chemistry_tools/Weather/WeatherAPI/bin/Debug/net7.0/GoogleMaps.LocationServices.dll

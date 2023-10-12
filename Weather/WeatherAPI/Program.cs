@@ -2,6 +2,7 @@
 using System.Net.Cache;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using GoogleMaps.LocationServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WeatherAPI.Forecast;
@@ -21,9 +22,28 @@ namespace WeatherAPI
         {
             try
             {
-                // get grid id, x and y for forecast               
+                string address = "El Paso, Texas";
+                
+                // use geocode api to find lat and long by address
+                HttpClient locationClient = new HttpClient();
+                HttpRequestMessage locationRequest = new HttpRequestMessage(HttpMethod.Get, $"https://geocode.maps.co/search?q={address}");
+
+                HttpResponseMessage locationHttpResponseMessage = await locationClient.SendAsync(locationRequest);
+                string locationResponse = await locationHttpResponseMessage.Content.ReadAsStringAsync();
+                
+                // process locationResponse into usable form for NewtonSoft
+                string firstResponse = locationResponse.Split('{', '}')[1];
+                firstResponse = "{" + firstResponse + "}";
+                
+                JObject jsonLocation = JObject.Parse(firstResponse);                               
+                JToken? latitude = jsonLocation.SelectToken("lat");
+                JToken? longitude = jsonLocation.SelectToken("lon");                
+                
+                string weatherLocation = $"https://api.weather.gov/points/{latitude},{longitude}";
+
+                // get grid id, x and y for forecast                               
                 HttpClient client = new HttpClient();
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://api.weather.gov/points/29.9007241,-95.5888448");
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, weatherLocation);
                 
                 ProductInfoHeaderValue header = new ProductInfoHeaderValue("WeatherCrow", "1.0");
                 ProductInfoHeaderValue comment = new ProductInfoHeaderValue("(+http://www.crowweather.com/WeatherCrow.html)");
@@ -33,29 +53,26 @@ namespace WeatherAPI
 
                 HttpResponseMessage httpResponseMessage = await client.SendAsync(request);
                 string response = await httpResponseMessage.Content.ReadAsStringAsync();
-                //Console.WriteLine(response);
-
 
                 JObject root = JObject.Parse(response);
 
-                var token = root.SelectToken("properties");
+                JToken? token = root.SelectToken("properties");
                 var xCord = token.SelectToken("gridX");
                 var  yCord = token.SelectToken("gridY");
-                var  gridID = token.SelectToken("gridId");
-                //Console.WriteLine($"{xCord} , {yCord}, {gridID}");  
+                var  gridID = token.SelectToken("gridId"); 
 
                 HttpRequestMessage forecastRequest = new HttpRequestMessage(HttpMethod.Get, $"https://api.weather.gov/gridpoints/{gridID}/{xCord},{yCord}/forecast");
                 HttpResponseMessage httpResponseForecast = await client.SendAsync(forecastRequest); 
 
                 string forcastResponse = await httpResponseForecast.Content.ReadAsStringAsync();
-                //Console.WriteLine(forcastResponse); 
 
-                JObject forecast = (JObject)JObject.Parse(forcastResponse)["properties"];;
-                //var forecastToken = forecast.SelectToken("properties");
-                JArray dailyForecast = (JArray) forecast["periods"];      
-                //Console.WriteLine(dailyForecast[1]);
-                
+                JObject forecast = (JObject)JObject.Parse(forcastResponse)["properties"];
+
+                JArray dailyForecast = (JArray)forecast["periods"];
+
+                Console.WriteLine(address);
                 Console.WriteLine("Temp \t WindSpeed  \t Forecast");
+                
                 foreach (var day in dailyForecast)
                 {
                     var dailyTemp = day["temperature"];
@@ -64,7 +81,7 @@ namespace WeatherAPI
                     var dailyWindDirection = day["windDirection"];
                     var dailyHumidity = day["relativeHumidity"];
                     var detailedForecast = day["detailedForecast"];
-                    //Console.WriteLine($"{dailyName} | {dailyTemp}");
+
                     Console.WriteLine($"{dailyTemp} \t {dailyWindSpeed} \t {dailyWindDirection} \t {dailyName} : {detailedForecast}");
                 }
             }
