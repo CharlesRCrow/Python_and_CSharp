@@ -29,7 +29,8 @@ namespace CASAPP
 
         private void textChangedEventHandler(object sender, TextChangedEventArgs args)
         {
-            
+
+            string dusk = Directory.GetCurrentDirectory();
             string search = SearchBox.Text;
             string digits = string.Concat(search.Where(Char.IsDigit));
 
