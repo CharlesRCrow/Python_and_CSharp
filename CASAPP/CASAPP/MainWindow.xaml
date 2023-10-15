@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("CAS.db")]
         xmlns:local="clr-namespace:CASAPP"
         mc:Ignorable="d"
         Title="MainWindow" Width="2000" Height="1200">
