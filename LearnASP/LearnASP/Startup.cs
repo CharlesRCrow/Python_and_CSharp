@@ -7,9 +7,9 @@ namespace LearnASP.Web;
 
 public class Startup
 {
-    public void ConfigureServices(IServiceCollection env)
+    public void ConfigureServices(IServiceCollection services)
     {
-
+        services.AddRazorPages();
     }
 
     public void Configure(
@@ -24,13 +24,14 @@ public class Startup
 
         app.UseHttpsRedirection();
 
-        app.UseDefaultFiles(); //index.html
+        //app.UseDefaultFiles(); //index.html
 
-        app.UseStaticFiles();
+        //app.UseStaticFiles();
 
-        app.UseEndpoints(enpoints =>
+        app.UseEndpoints(endpoints =>
         {
-            enpoints.MapGet("/hello", () => "Hello World!");
+            endpoints.MapRazorPages();
+            endpoints.MapGet("/hello", () => "Hello World!");
         });
     }        
 }

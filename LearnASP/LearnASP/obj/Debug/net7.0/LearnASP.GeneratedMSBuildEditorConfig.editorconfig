@@ -15,3 +15,15 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = /workspaces/chemistry_tools/LearnASP/LearnASP
 build_property._RazorSourceGeneratorDebug = 
+
+[/workspaces/chemistry_tools/LearnASP/LearnASP/Pages/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvaW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/chemistry_tools/LearnASP/LearnASP/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/chemistry_tools/LearnASP/LearnASP/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

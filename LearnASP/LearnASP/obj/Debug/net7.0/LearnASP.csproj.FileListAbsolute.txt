@@ -25,3 +25,5 @@
 /workspaces/chemistry_tools/LearnASP/LearnASP/obj/Debug/net7.0/LearnASP.genruntimeconfig.cache
 /workspaces/chemistry_tools/LearnASP/LearnASP/obj/Debug/net7.0/ref/LearnASP.dll
 /workspaces/chemistry_tools/LearnASP/LearnASP/bin/Debug/net7.0/LearnASP.staticwebassets.runtime.json
+/workspaces/chemistry_tools/LearnASP/LearnASP/obj/Debug/net7.0/LearnASP.RazorAssemblyInfo.cache
+/workspaces/chemistry_tools/LearnASP/LearnASP/obj/Debug/net7.0/LearnASP.RazorAssemblyInfo.cs
