@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "D81DAMhvLYB+fmHmb45RQLmrLYkID/5SsPUL96+cYjc=",
+  "Source": "LearnASP",
+  "BasePath": "_content/LearnASP",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "LearnASP/wwwroot",
+      "Source": "LearnASP",
+      "ContentRoot": "/workspaces/chemistry_tools/LearnASP/LearnASP/wwwroot/",
+      "BasePath": "_content/LearnASP",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/workspaces/chemistry_tools/LearnASP/LearnASP/wwwroot/index.html",
+      "SourceId": "LearnASP",
+      "SourceType": "Discovered",
+      "ContentRoot": "/workspaces/chemistry_tools/LearnASP/LearnASP/wwwroot/",
+      "BasePath": "_content/LearnASP",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/index.html"
+    }
+  ]
+}

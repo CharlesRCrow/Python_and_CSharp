@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/workspaces/chemistry_tools/LearnASP/LearnASP/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.LearnASP.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.build.LearnASP.props",
+      "PackagePath": "build\\LearnASP.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildMultiTargeting.LearnASP.props",
+      "PackagePath": "buildMultiTargeting\\LearnASP.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildTransitive.LearnASP.props",
+      "PackagePath": "buildTransitive\\LearnASP.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
