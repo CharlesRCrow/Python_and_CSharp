@@ -28,7 +28,7 @@ namespace WeatherAPI
                 string postalCode = "77065";
                 string country = "US";
                          
-                string address = $"Karnes City, Texas";
+                string address = $"Angleton, Texas";
                 //string address = $"city={city}&state={state}&postalcode={postalCode}";
                 
                 // use geocode api to find lat and long by address
@@ -99,10 +99,18 @@ namespace WeatherAPI
                         var dailyName = day["name"];
                         var dailyWindSpeed = day["windSpeed"];
                         var dailyWindDirection = day["windDirection"];
-                        var dailyHumidity = day["relativeHumidity"];
+                        var dailyHumidity = day["relativeHumidity"]["value"];
+                        var dailyDewpoint = day["dewpoint"]["value"];
+                        var dailyPrecipitation = day["probabilityOfPrecipitation"]["value"];
+                        string precip = dailyPrecipitation.ToString();
+                        if (precip == "")
+                        {
+                            precip = "0";
+                        }
                         var detailedForecast = day["detailedForecast"];
 
-                        Console.WriteLine($"{dailyTemp} \t {dailyWindSpeed} \t {dailyWindDirection} \t {dailyName} : {detailedForecast}");
+                        Console.WriteLine($"{dailyTemp}F \t {dailyWindSpeed}mph \t {dailyWindDirection} \t {dailyName} : {detailedForecast}");
+                        Console.WriteLine($"Humidity: {(String.Format("{0:0}", dailyHumidity))}% Dewpoint: {(String.Format("{0:0}", dailyDewpoint))}C Precipitation: {precip}%");
                     }
                 }
             }
