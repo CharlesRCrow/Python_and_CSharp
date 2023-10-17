@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "D81DAMhvLYB+fmHmb45RQLmrLYkID/5SsPUL96+cYjc=",
+  "Hash": "JN2PCdAmV2/9kq+CwrYFSjNtzbgCPOhY/enA+D/2mTo=",
   "Source": "LearnASP",
   "BasePath": "_content/LearnASP",
   "Mode": "Default",
@@ -8,19 +8,19 @@
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [
     {
-      "Name": "LearnASP/wwwroot",
+      "Name": "LearnASP\\wwwroot",
       "Source": "LearnASP",
-      "ContentRoot": "/workspaces/chemistry_tools/LearnASP/LearnASP/wwwroot/",
+      "ContentRoot": "C:\\Users\\charl\\OneDrive\\Documents\\GitHub\\chemistry_tools\\LearnASP\\LearnASP\\wwwroot\\",
       "BasePath": "_content/LearnASP",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "/workspaces/chemistry_tools/LearnASP/LearnASP/wwwroot/index.html",
+      "Identity": "C:\\Users\\charl\\OneDrive\\Documents\\GitHub\\chemistry_tools\\LearnASP\\LearnASP\\wwwroot\\index.html",
       "SourceId": "LearnASP",
       "SourceType": "Discovered",
-      "ContentRoot": "/workspaces/chemistry_tools/LearnASP/LearnASP/wwwroot/",
+      "ContentRoot": "C:\\Users\\charl\\OneDrive\\Documents\\GitHub\\chemistry_tools\\LearnASP\\LearnASP\\wwwroot\\",
       "BasePath": "_content/LearnASP",
       "RelativePath": "index.html",
       "AssetKind": "All",
@@ -31,7 +31,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/index.html"
+      "OriginalItemSpec": "wwwroot\\index.html"
     }
   ]
 }
