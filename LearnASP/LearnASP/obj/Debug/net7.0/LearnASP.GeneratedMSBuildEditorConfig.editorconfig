@@ -9,21 +9,25 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LearnASP
 build_property.RootNamespace = LearnASP
-build_property.ProjectDir = C:\Users\charl\OneDrive\Documents\GitHub\chemistry_tools\LearnASP\LearnASP\
+build_property.ProjectDir = /workspaces/chemistry_tools/LearnASP/LearnASP/
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\charl\OneDrive\Documents\GitHub\chemistry_tools\LearnASP\LearnASP
+build_property.MSBuildProjectDirectory = /workspaces/chemistry_tools/LearnASP/LearnASP
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/charl/OneDrive/Documents/GitHub/chemistry_tools/LearnASP/LearnASP/Pages/index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcaW5kZXguY3NodG1s
+[/workspaces/chemistry_tools/LearnASP/LearnASP/Pages/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvaW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/charl/OneDrive/Documents/GitHub/chemistry_tools/LearnASP/LearnASP/Pages/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+[/workspaces/chemistry_tools/LearnASP/LearnASP/Pages/Suppliers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU3VwcGxpZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/charl/OneDrive/Documents/GitHub/chemistry_tools/LearnASP/LearnASP/Pages/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+[/workspaces/chemistry_tools/LearnASP/LearnASP/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/chemistry_tools/LearnASP/LearnASP/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
